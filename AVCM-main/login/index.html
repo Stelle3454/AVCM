@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="wrapper">
+        <form @submit.prevent="submitForm">
+          <h1 class="word">AVCM Medical Clinic</h1>
+          <h1>Login</h1>
+          <div class="input-box">
+            <input v-model="email" type="text" placeholder="Email" required>
+            <i class='bx bxs-user'></i>
+          </div>
+          <div class="input-box">
+            <input v-model="password" type="password" placeholder="Password" required>
+            <i class='bx bx-lock-alt'></i>
+          </div>
+          <div class="remember-forgot">
+            <label for="checkbox"><input type="checkbox">Remember me</label>
+            <a href="#">Forgot Password?</a>
+          </div>
+          <button type="submit" class="btn">Login</button>
+          <div class="register-link">
+            <p>Don't have an account?<a href="signup.html">Register</a></p>
+          </div>
+        </form>
+      </div>
+    </header>
+  </div>
+  <!-- Include Vue.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <!-- Include Axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+
+    
+    new Vue({
+      el: '#app',
+      data: {
+        email: '',
+        password: '',
+      },
+      methods: {
+        submitForm() {
+          axios.post('http://127.0.0.1:8000/api/login', {
+            email: this.email,
+            password: this.password,
+          }).then(response => {
+            // Handle success response
+            console.log(response.data);
+            if (response.data.status === 1) {
+              // Redirect to another HTML page after successful login
+              window.location.href = 'Avcm.html';
+            }
+          }).catch(error => {
+            // Handle error response
+            console.error(error.response.data);
+          });
+        },
+      },
+    });
+  </script>
+</body>
+</html>

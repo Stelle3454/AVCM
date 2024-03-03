@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup</title>
+  <link rel="stylesheet" href="style.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <div id="app">
+    <div class="wrapper">
+      <form @submit.prevent="submitForm">
+        <h1>AVCM Medical Clinic</h1>
+        <h1>Sign up</h1>
+        <div class="input-box">
+          <input v-model="name" type="text" placeholder="Name" required>
+          <i class='bx bxs-user'></i>
+        </div>
+        <div class="input-box">
+          <input v-model="email" type="email" placeholder="Email" required>
+          <i class='bx bxs-envelope'></i>
+        </div>
+        <div class="input-box">
+          <input v-model="phone_no" type="text" placeholder="Phone Number" required>
+          <i class='bx bxs-phone'></i>
+        </div>
+        <div class="input-box">
+          <input v-model="password" type="password" placeholder="Password" required>
+          <i class='bx bx-lock-alt'></i>
+        </div>
+        <div class="input-box">
+          <input v-model="confirmPassword" type="password" placeholder="Confirm Password" required>
+          <i class='bx bx-lock-alt'></i>
+        </div>
+        <button type="submit" class="btn">Signup</button>
+    </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        name: '',
+        email: '',
+        phone_no: '',
+        password: '',
+        confirmPassword: '',
+        rememberMe: false,
+      },
+      methods: {
+        
+        submitForm() {
+    if (this.password !== this.confirmPassword) {
+        alert('Passwords do not match');
+        return;
+    }
+
+    axios.post('http://127.0.0.1:8000/api/register', {
+        name: this.name,
+        email: this.email,
+        phone_no: this.phone_no,
+        password: this.password,
+    }).then(response => {
+        // Handle success response
+        console.log('Server response:', response.data);
+    }).catch(error => {
+        // Handle error response
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error('Server responded with an error:', error.response.data);
+            console.error('Status Code:', error.response.status);
+            console.error('Headers:', error.response.headers);
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error('No response received from the server');
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error setting up the request:', error.message);
+        }
+    }).finally(() => {
+        // This block will always be executed, you can use it for cleanup or additional actions
+    });
+}
+
+      },
+    });
+  </script>
+</body>
+</html>
