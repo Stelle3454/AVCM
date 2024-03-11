@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AvcmController;
@@ -27,16 +28,13 @@ Route::post('/doctors', [AvcmController::class, 'store']);
 Route::put('/doctors/{id}', [AvcmController::class, 'update']);
 Route::delete('/doctors/{id}', [AvcmController::class, 'destroy']);
 
-
 Route::resource('/patient', PatientController::class);
-Route::get('/patient', [PatientController::class, 'index']);
-Route::post('/patient',[PatientController::class, 'store']);
 
+// Remove one of the conflicting route definitions
 Route::resource('/login', LoginController::class);
-Route::resource('/login', LoginController::class)->only(['index', 'store']);
+// OR
+// Route::resource('/login', LoginController::class)->only(['index', 'store']);
 
-
-
-Route::post('/register', [UserController::class, 'register']);//user
+Route::post('/register', [UserController::class, 'register']); // user
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);

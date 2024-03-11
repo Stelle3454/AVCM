@@ -6,10 +6,9 @@
   <title>Login</title>
   <link rel="stylesheet" href="style.css">
   <link href='https://unpkg.com/boxicons/css/boxicons.min.css' rel='stylesheet'>
-
-
 </head>
 <body>
+
   <div id="app">
     <header>
       <div class="wrapper">
@@ -41,8 +40,6 @@
   <!-- Include Axios CDN -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-
-    
     new Vue({
       el: '#app',
       data: {
@@ -59,7 +56,7 @@
             console.log(response.data);
             if (response.data.status === 1) {
               // Redirect to another HTML page after successful login
-              window.location.href = 'Avcm.html';
+              window.location.href = './Avcm.html';
             }
           }).catch(error => {
             // Handle error response
