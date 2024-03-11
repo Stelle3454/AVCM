@@ -9,6 +9,6 @@ class Avcm extends Model
 {
     use HasFactory;
     protected $table = "doctors";
-    protected $fillable = ["firstname", "middlename","lastname"];
+    protected $fillable = ["firstName", "middleName","lastName"];
 
 }

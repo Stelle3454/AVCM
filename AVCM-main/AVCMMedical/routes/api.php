@@ -22,24 +22,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/doctors', AvcmController::class);
-
 Route::get('/doctors', [AvcmController::class, 'index']);
 Route::post('/doctors', [AvcmController::class, 'store']);
+Route::put('/doctors/{id}', [AvcmController::class, 'update']);
+Route::delete('/doctors/{id}', [AvcmController::class, 'destroy']);
+
 
 Route::resource('/patient', PatientController::class);
-
 Route::get('/patient', [PatientController::class, 'index']);
 Route::post('/patient',[PatientController::class, 'store']);
 
 Route::resource('/login', LoginController::class);
-//
 Route::resource('/login', LoginController::class)->only(['index', 'store']);
 
-//
-//
-//Route::post('login', [AuthController::class, 'login']);
-//Route::post('login', 'AuthController@login');
+
 
 Route::post('/register', [UserController::class, 'register']);//user
 Route::post('/login', [UserController::class, 'login']);

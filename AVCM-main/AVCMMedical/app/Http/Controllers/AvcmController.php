@@ -9,23 +9,42 @@ use Illuminate\Http\RedirectResponse;
 
 class AvcmController extends Controller
 {
-    
     public function index()
     {
-        return response()->json(Avcm::all()->toArray());
-        
-
+        return Avcm::all();
     }
+
     public function store(Request $request)
     {
-        Avcm::create($request->all());
-        return response()->json('Data added successfully', 201);
+        $data = $request->validate([
+            'firstName' => 'required',
+            'middleName' => 'nullable',
+            'lastName' => 'required',
+        ]);
 
+        $doctor = Avcm::create($data);
 
+        return response()->json($doctor, 201);
     }
+
+    public function update(Request $request, Avcm $doctor)
+    {
+        $data = $request->validate([
+            'firstName' => 'required',
+            'middleName' => 'nullable',
+            'lastName' => 'required',
+        ]);
+
+        $doctor->update($data);
+
+        return response()->json($doctor, 200);
+    }
+
     public function destroy(Avcm $avcm)
     {
         $avcm->delete();
-    }
+
+        return response()->json(null, 204);
+    }    
 }
 

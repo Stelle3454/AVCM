@@ -95,161 +95,121 @@
       <!-- End DataTable -->
 
 
-      <div class="Rectangle17">
-    
-        
-        <div
-          class="modal fade"
-          id="addDoctorModal"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-              </div>
-              <div class="modal-body">
-                <form>
-                  <div class="mb-3">
-                    <label for="firstname" class="form-label">First Name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="firstname"
-                      v-model="newDoctor.firstname"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="middlename" class="form-label"
-                      >Middle Name</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="middlename"
-                      v-model="newDoctor.middlename"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="lastname" class="form-label">Last Name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="lastname"
-                      v-model="newDoctor.lastname"
-                    />
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  @click="addDoctor"
-                >
-                  Add Doctor
-                </button>
-              </div>
-            </div>
+    <div class="Rectangle17">
+      <div id="app" class="container mt-4">
+        <h2>Add Doctor's Information</h2>
+        <form @submit.prevent="addDoctor">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input
+              v-model="newDoctor.firstName"
+              type="text"
+              class="form-control"
+              id="firstName"
+              name="firstName"
+              required
+            />
           </div>
-        </div>
-        <div id="app">
-          <div class="main-container">
-            <div class="d-flex justify-content-end mb-3">
-           
-            </div>
-            
-
-            <div id="app">
-                <!-- Add Appointment Form -->
-                <form @submit.prevent="addAppointment" class="my-3">
-                    <div class="form-row">
-                        <div class="col-md-6 mb-3">
-                            <label for="Fname">First Name</label>
-                            <input type="text" class="form-control" id="firstname" placeholder="Enter First Name" >
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="Mname">Middle Name</label>
-                            <input type="text" class="form-control" id="middlename" placeholder="Enter middlename">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-6 mb-3">
-                            <label for="Lname">Last Name</label>
-                            <input type="text" class="form-control" id="lastname" placeholder="Enter Last Name">
-                        </div>
-                    </div>
-                    <button type="button" class="btn">Add Doctor</button>
-                </form>    
-                
-                 <!-- DataTable -->
-                 <div class="table-container">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Doctor's ID</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Middle Name</th>
-            <th scope="col">Last Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="doctor in doctors" :key="doctor.id">
-            <td>{{ doctor.id }}</td>
-            <td>{{ doctor.firstname }}</td>
-            <td>{{ doctor.middlename }}</td>
-            <td>{{ doctor.lastname }}</td>
-          </tr>
-        </tbody>
-      </table>
+          <div class="mb-3">
+            <label for="middleName" class="form-label">Middle Name</label>
+            <input
+              v-model="newDoctor.middleName"
+              type="text"
+              class="form-control"
+              id="middleName"
+              name="middleName"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input
+              v-model="newDoctor.lastName"
+              type="text"
+              class="form-control"
+              id="lastName"
+              name="lastName"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+  
+        <h2>Doctor's Information</h2>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Middle Name</th>
+              <th>Last Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(doctor, index) in doctors" :key="index">
+              <td>{{ doctor.firstName }}</td>
+              <td>{{ doctor.middleName }}</td>
+              <td>{{ doctor.lastName }}</td>
+              <td>
+                <button @click="editDoctor(index)" class="btn btn-sm btn-info">
+                  Edit
+                </button>
+                <button
+                  @click="deleteDoctor(index)"
+                  class="btn btn-sm btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- Include Vue.js script -->
+      <script>
+        new Vue({
+          el: "#app",
+          data: {
+            newDoctor: {
+              firstName: "",
+              middleName: "",
+              lastName: "",
+            },
+            doctors: [],
+            editingIndex: null,
+          },
+          methods: {
+            addDoctor: function () {
+              if (this.editingIndex !== null) {
+                // If editing, update the existing doctor
+                this.$set(this.doctors, this.editingIndex, {
+                  ...this.newDoctor,
+                });
+                this.editingIndex = null;
+              } else {
+                // If not editing, add a new doctor
+                this.doctors.push({ ...this.newDoctor });
+              }
+  
+              // Clear the form fields
+              this.newDoctor.firstName = "";
+              this.newDoctor.middleName = "";
+              this.newDoctor.lastName = "";
+            },
+            editDoctor: function (index) {
+              // Set the form fields with the selected doctor's information
+              this.newDoctor = { ...this.doctors[index] };
+              this.editingIndex = index;
+            },
+            deleteDoctor: function (index) {
+              // Remove the selected doctor from the array
+              this.doctors.splice(index, 1);
+              this.editingIndex = null;
+            },
+          },
+        });
+      </script>
     </div>
-                <!--Datatable end-->
-                <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-                <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-                <script>
-                  new Vue({
-                    el: '#app',
-                    data: {
-                      newDoctor: {
-                        firstname: '',
-                        middlename: '',
-                        lastname: '',
-                      },
-                      doctors: [], // Array to store doctors data
-                    },
-                    methods: {
-                      addDoctor() {
-                        // Assuming you have an endpoint for adding doctors in your Laravel backend
-                        axios.post('http://127.0.0.1:8000/api/doctors', this.newDoctor)
-                          .then(response => {
-                            // Assuming the response contains the added doctor data with an ID
-                            const addedDoctor = response.data;
-                            this.doctors.push(addedDoctor);
-            
-                            // Clear the form after adding a doctor
-                            this.newDoctor = {
-                              firstname: '',
-                              middlename: '',
-                              lastname: '',
-                            };
-                          })
-                          .catch(error => {
-                            console.error('Error adding doctor:', error);
-                          });
-                      },
-            
-                      // Add other methods as needed (editDoctor, deleteDoctor, etc.)
-                    },
-                  });
-                </script>
-            </div>
+          
   </body>
 </html>
